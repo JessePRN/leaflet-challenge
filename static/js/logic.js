@@ -17,22 +17,34 @@ function createFeatures(earthquakeData) {
     function pointToLayer(feature, latlng) {
         return L.circleMarker(latlng);
     }
-    function fillColorQuake(mag) {
-        if (mag > 4) {
+    function fillColorQuake(depth) {
+        if (depth > 15) {
             return "darkred"
-        } else if (mag > 3){
+        } else if (depth > 10){
             return "red"
-        } else if (mag > 2){
+        } else if (depth > 5){
             return "darkgreen"        
-        } else if (mag > 1){
+        } else if (depth > 2){
             return "green"
         } else return "lightgreen"
     }
 
+    function varyRadiusQuake(mag) {
+        if (mag > 4) {
+            return 18
+        } else if (mag > 3){
+            return 14
+        } else if (mag > 2){
+            return 10    
+        } else if (mag > 1){
+            return 6
+        } else return 4
+    }
+
     function styleQuakeMarker(feature) {
         return {
-            radius: 8,
-            fillColor: fillColorQuake(feature.properties.mag),
+            radius: varyRadiusQuake(feature.properties.mag),
+            fillColor: fillColorQuake(feature.geometry.coordinates[2]),
             color: "#000",
             weight: 1,
             opacity: 1,
