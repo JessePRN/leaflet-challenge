@@ -17,17 +17,50 @@ function createFeatures(earthquakeData) {
     function pointToLayer(feature, latlng) {
         return L.circleMarker(latlng);
     }
+    function fillColorQuake(mag) {
+        if (mag > 4) {
+            return "darkred"
+        } else if (mag > 3){
+            return "red"
+        } else if (mag > 2){
+            return "darkgreen"        
+        } else if (mag > 1){
+            return "green"
+        } else return "lightgreen"
+    }
+
+    function styleQuakeMarker(feature) {
+        return {
+            radius: 8,
+            fillColor: fillColorQuake(feature.properties.mag),
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+
+        }
+    }
 
     // Create a GeoJSON layer that contains the features array on the earthquakeData object.
     // Run the onEachFeature function once for each piece of data in the array.
     var earthquakes = L.geoJSON(earthquakeData, {
         pointToLayer: pointToLayer,
-        onEachFeature: onEachFeature
+        onEachFeature: onEachFeature,
+        style: styleQuakeMarker
     });
 
     // Send our earthquakes layer to the createMap function/
     createMap(earthquakes);
 }
+// reference from docs
+// var geojsonMarkerOptions = {
+//     radius: 8,
+//     fillColor: "#ff7800",
+//     color: "#000",
+//     weight: 1,
+//     opacity: 1,
+//     fillOpacity: 0.8
+// };
 
 function createMap(earthquakes) {
 
